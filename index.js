@@ -12,6 +12,15 @@ app.get("/", (req, res) => {
        res.send("Hello World!");
 });
 
+app.get("/products", async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.status(200).json(products);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
 app.post("/products", async (req, res) => {
   try {
     const product = await Product.create(req.body);
