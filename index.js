@@ -12,6 +12,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+// Get all products
 app.get("/products", async (req, res) => {
   try {
     const products = await Product.find();
@@ -21,6 +22,7 @@ app.get("/products", async (req, res) => {
   }
 });
 
+// Get product by id
 app.get("/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -31,10 +33,27 @@ app.get("/products/:id", async (req, res) => {
   }
 });
 
+// Create new product
 app.post("/products", async (req, res) => {
   try {
     const product = await Product.create(req.body);
     res.status(201).json(product);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// Update product by id
+app.put("/products/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findByIdAndUpdate(id, req.body);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    //res.status(200).json(product);
+    const updatedProduct = await Product.findById(id);
+    res.status(200).json(updatedProduct);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
