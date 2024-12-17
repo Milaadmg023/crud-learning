@@ -59,6 +59,20 @@ app.put("/products/:id", async (req, res) => {
   }
 });
 
+// Delete product by id
+app.delete("/products/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findByIdAndDelete(id);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.status(200).json({ message: "Product deleted" });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+})
+
 mongoose
   .connect(
     `mongodb+srv://bagerim962:${process.env.MONGO_PASS}@backenddb.itfaz.mongodb.net/?retryWrites=true&w=majority&appName=BackendDB`
