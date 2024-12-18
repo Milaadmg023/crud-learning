@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const Product = require("./models/products.model.js");
+const productRoutes = require("./routes/product.routes.js")
 require("dotenv").config();
 
 const app = express();
@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // routes
-app.use("/api/products", require("./routes/product.routes.js"));
+app.use("/api/products", productRoutes);
 
 // connect to db
 mongoose
